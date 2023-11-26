@@ -7,10 +7,13 @@
 <h1>Author</h1>
 
 <form asp-controller="Authors" asp-action="Index">
-    <p>
-        Search name: <input type="text" name="SearchString" />
-        <input type="submit" value="Search" />
-    </p>
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search book"
+               name="SearchString" value="@ViewData["CurrentSearch"]" />
+        <button type="submit" class="btn btn-outline-dark" aria-label="Search">
+            <i class="fa fa-search"></i>
+        </button>
+    </div>
 </form>
 
 <p>

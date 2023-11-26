@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Exam06.Data;
 using Exam06.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Exam06.Controllers
 {
@@ -21,27 +22,35 @@ namespace Exam06.Controllers
         }
 
         // GET: Authors
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["IdSort"] = sortOrder == "Id_asc" ? "Id_desc" : "Id_asc";
             ViewData["FullNameSort"] = sortOrder == "FullName_asc" ? "FullName_desc" : "FullName_asc";
             ViewData["BirhtDateSort"] = sortOrder == "BirhtDate_asc" ? "BirhtDate_asc" : "BirhtDate_asc";
 
-            var author = _context.Authors.AsQueryable();
-
-            author = sortOrder switch
+            var authors = _context.Authors.AsQueryable();
+            if (!searchString.IsNullOrEmpty())
             {
-                "Id_asc" => author.OrderBy(x => x.Id),
-                "Id_desc" => author.OrderByDescending(x => x.Id),
-                "FullName_asc" => author.OrderBy(x => x.FullName),
-                "FullName_desc" => author.OrderByDescending(x => x.FullName),
-                "BirhtDate_asc" => author.OrderBy(x => x.BirthDate),
-                "BirhtDate_desc" => author.OrderByDescending(x => x.BirthDate),
-                _ => author.OrderBy(x => x.Id)
-            }; ;
-            return View(author);
+                authors = authors
+                    .Where(a => a.FullName.ToLower().Contains(searchString.ToLower()))
+                    .AsQueryable();
+
+            };
+
+            authors = sortOrder switch
+            {
+                "Id_asc" => authors.OrderBy(x => x.Id),
+                "Id_desc" => authors.OrderByDescending(x => x.Id),
+                "FullName_asc" => authors.OrderBy(x => x.FullName),
+                "FullName_desc" => authors.OrderByDescending(x => x.FullName),
+                "BirhtDate_asc" => authors.OrderBy(x => x.BirthDate),
+                "BirhtDate_desc" => authors.OrderByDescending(x => x.BirthDate),
+                _ => authors.OrderBy(x => x.Id)
+            }; 
+            return View(authors);
         }
+ 
 
         // GET: Authors/Details/5
         public async Task<IActionResult> Details(int? id)
