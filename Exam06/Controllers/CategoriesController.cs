@@ -2,6 +2,7 @@
 using Exam06.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Exam06.Controllers
 {
@@ -13,15 +14,33 @@ namespace Exam06.Controllers
         {
             _context = context;
         }
-
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string? searchString)
         {
-            return _context.Categories != null ?
-                        View(await _context.Categories.ToListAsync()) :
-                        Problem("Entity set 'LibraryDbContext.Categories'  is null.");
-        }
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["IdSort"] = sortOrder == "id_asc" ? "id_desc" : "id_asc";
+            ViewData["NameSort"] = sortOrder == "name_asc" ? "name_desc" : "name_asc";
 
+            var categories = _context.Categories.AsQueryable();
+
+            if (searchString!=null)
+            {
+                categories = categories
+                .Where(s => s.Name.ToLower().Contains(searchString.ToLower()))
+                .AsQueryable();
+            }
+
+            categories = sortOrder switch
+            {
+                "id_asc" => categories.OrderBy(x => x.Id),
+                "id_desc" => categories.OrderByDescending(x => x.Id),
+                "name_asc" => categories.OrderBy(x => x.Name),
+                "name_desc" => categories.OrderByDescending(x => x.Name),
+                _ => categories.OrderBy(x => x.Id)
+            };
+
+            return View(categories);
+        }
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {

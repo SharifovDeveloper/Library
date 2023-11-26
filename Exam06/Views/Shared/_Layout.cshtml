@@ -6,6 +6,11 @@
     <title>@ViewData["Title"] - Exam06</title>
   @*   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
     <link rel="stylesheet" href="~/css/mycsstheme.css"/>
+    <!-- Add this link in the head section of your HTML to include Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-lKuw9DIHl7CkRrPjFqOJ6uCyH-2BE6Ff5cLZboU/8+1/Aowm65PAtop3c1zS01b2" crossorigin="anonymous">
+
+
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Exam06.styles.css" asp-append-version="true" />
    
@@ -26,9 +31,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                    @*     <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        </li> *@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
                         </li>

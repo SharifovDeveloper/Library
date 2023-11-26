@@ -4,21 +4,23 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Author</h1>
+<h1>Authors</h1>
 
 <form asp-controller="Authors" asp-action="Index">
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search book"
+        <input type="text" class="form-control" placeholder="Search FullName"
                name="SearchString" value="@ViewData["CurrentSearch"]" />
         <button type="submit" class="btn btn-outline-dark" aria-label="Search">
             <i class="fa fa-search"></i>
         </button>
     </div>
 </form>
+<br />
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr class="table-primary">
