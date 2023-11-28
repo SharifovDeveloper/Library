@@ -100,8 +100,6 @@ namespace Exam06.Controllers
                    
                     var books = await _context.Books
                         .Include(b => b.Category)
-                        .Include(b => b.Author)
-                        .Where(b => b.Title.ToLower().Contains(searchString.ToLower()))
                         .ToListAsync();
 
                     var categories = await _context.Categories
